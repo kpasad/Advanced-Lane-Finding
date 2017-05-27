@@ -1,5 +1,5 @@
 
-#Advanced Lane Finding Project
+# Advanced Lane Finding Project
 
 The goals / steps of this project are the following:
 
@@ -27,7 +27,7 @@ The goals / steps of this project are the following:
 [image_superimp]:./images/figure_10.png "Fit Lanes"
 
 
-###Camera Calibration
+### Camera Calibration
 A camera matrix maps the 3D real world into the camera image plane.The camera calibration algorithm computes the camera matrix in terms of extrinsic and intrinsic parameters. A good explanation is found at: https://www.mathworks.com/help/vision/ug/camera-calibration.html
 
 Camera distortion occurs due to lens imperfection. It is represented as a shift in the (x,y) position of a
@@ -36,7 +36,7 @@ pixel from its ideal location. Distortion is represented as a matrix that transf
 The camera calibration function in openCV returns both the camera matrix and the distortion coefficients.
 Both are used in the openCV un-distort function to correct for distortion.
 
-###Computing the calibration and distortion matrix:
+### Computing the calibration and distortion matrix:
 
 The code for this step is contained in the file calibrate.py. 
 
@@ -50,11 +50,11 @@ A closer look at the top left images shows the bending of the top of the image (
 It is interesting to note that the `objpoints` do not have a unit, whereas `imgpoints` are measured in pixels. This is OK since the measurement of calibration and distortion matrices depend on relative distance between the pixels rather than any absolute scale.
 ###Pipeline (single images)
 
-####1. Provide an example of a distortion-corrected image.
+#### 1. Provide an example of a distortion-corrected image.
 Once the calibration and the distortion matrix is found, it does not need to be recalculated for the same camera. We store it in file. As an example, we reload the stored matrix and apply it to one of the test images. 
 
 
-####2. Describe how (and identify where in your code) you used color transforms, gradients or other methods to create a thresholded binary image.  Provide an example of a binary image result.
+#### 2. Describe how (and identify where in your code) you used color transforms, gradients or other methods to create a thresholded binary image.  Provide an example of a binary image result.
 Lane identification is preceded by image pre-processing who purpose it to remove the information elements that are not essential to or detrimental to accurate lane finding. This pre-processing occurs as a series of steps:
 
 1. Gaussian blurring
@@ -70,7 +70,7 @@ I used a combination of color and gradient thresholds to generate a binary image
 ![alt text][image_bin_thresh_1]
 ![alt text][image_bin_thresh_2]
 
-####3. Describe how (and identify where in your code) you performed a perspective transform and provide an example of a transformed image.
+#### 3. Describe how (and identify where in your code) you performed a perspective transform and provide an example of a transformed image.
 
 After binary image conversion, we perform the un-distortion by reusing the camera distortion matrix calculated beforehand. A perspective transformation converts the image into a bird-eye view. Perspective transformation requires the source point locations in pixels and the destination points (in pixels) where the source points are maped. Based on this information the openCV functioncv2.getPerspectiveTransform()computes a transformation matrix. The cv2.warpPerspective() then applies this transformation to the un-distroted image. See the function corners_unwrap(). 
 We choose the src and destination  point as below. Other combinations would have worked fine as well.
@@ -95,7 +95,7 @@ Images below show the effect of perspective transformation.
 ![alt text][image_pers_1]
 ![alt text][image_pers_2]
 
-####Lane Identification : The Stacked windowed approach
+#### Lane Identification : The Stacked windowed approach
 The general ideal is, for each lane find a sequence of connected windows along the Y-axis which has the maximum density of pixels. 
 
 We begin at the bottom of the image, at either the location of lanes in previous frame, or absent that information, perform a histogram search across the x-axis. In the function find_lanes(), we take a histogram, and look for two maximum values (corresponding to maximum pixel density). 
@@ -107,11 +107,11 @@ In the parent function fit_lanes(), a second order polynomial is fit on the x an
 ![alt text][image_fit_1]
 ![alt text][image_fit_2]
 
-####5. Describe how (and identify where in your code) you calculated the radius of curvature of the lane and the position of the vehicle with respect to center.
+#### 5. Describe how (and identify where in your code) you calculated the radius of curvature of the lane and the position of the vehicle with respect to center.
 
 The function find_curvature() computes the curvature.
 
-####6. Provide an example image of your result plotted back down onto the road such that the lane area is identified clearly.
+#### 6. Provide an example image of your result plotted back down onto the road such that the lane area is identified clearly.
 The lanes are fitted on the perspective transformed image. To display the lanes on unwraped image, the fit lanes must be un-wraped as well. The function draw_poly() first creates an image with only the lanes. It then applys a perspective transform, but with a camera matrix that is created by inverting the order of source and destination images in the perspectiveTransform() computation function. See the corners_unwrap() function where both the transformation matrices are computed.
 The result of superimposing the fit lanes on baseline image are the following 
 
@@ -125,7 +125,7 @@ Here's a [link to my video result](./project_video.mp4)
 
 ---
 
-###Discussion
+### Discussion
 
 A lot of time was spend fine tuning the parameters. The parameter set is generally not robust and does not stand the test of changing road conditions. An emulated data set for varying road conditions can possibly be used to build robust adaptive algorithms.
   
