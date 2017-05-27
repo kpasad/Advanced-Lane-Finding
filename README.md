@@ -14,23 +14,17 @@ The goals / steps of this project are the following:
 
 [//]: # (Image References)
 
-[image1]: ./op_images/chess_board_corners.png "Undistorted"
-[image1a]: ./op_images/undist.png "Undistorted"
+[image1]: ./images/chess_board_corners.png "Undistorted"
+[image1a]: ./images/undist.png "Undistorted"
 [image2]: ./test_images/test1.jpg "Road Transformed"
-[image_bin_thresh_1]:./op_images/figure_1.png "Binary1"
-[image_bin_thresh_2]:./op_images/figure_2.png "Binary2"
-[image_pers_1]:./op_images/figure_4.png "Perpective wrap"
-[image_pers_2]:./op_images/figure_5.png "Perpective wrap"
+[image_bin_thresh_1]:./images/figure_1.png "Binary1"
+[image_bin_thresh_2]:./images/figure_2.png "Binary2"
+[image_pers_1]:./images/figure_4.png "Perpective wrap"
+[image_pers_2]:./images/figure_5.png "Perpective wrap"
 
-[image_fit_1]:./op_images/figure_3-1.png "Fit lanes"
-[image_fit_2]:./op_images/figure_4-1.png "Fit Lanes"
-[image_superimp]:./op_images/figure_10.png "Fit Lanes"
-
-[image3]: ./examples/binary_combo_example.jpg "Binary Example"
-[image4]: ./examples/warped_straight_lines.jpg "Warp Example"
-[image5]: ./examples/color_fit_lines.jpg "Fit Visual"
-[image6]: ./examples/example_output.jpg "Output"
-[video1]: ./project_video.mp4 "Video"
+[image_fit_1]:./images/figure_3-1.png "Fit lanes"
+[image_fit_2]:./images/figure_4-1.png "Fit Lanes"
+[image_superimp]:./images/figure_10.png "Fit Lanes"
 
 
 ###Camera Calibration
