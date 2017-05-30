@@ -16,7 +16,7 @@ The goals / steps of this project are the following:
 
 [image1]: ./images/chess_board_corners.png "Undistorted"
 [image1a]: ./images/undist.png "Undistorted"
-[image2]: ./test_images/test1.jpg "Road Transformed"
+[image2]: ./images/cam_dist_example.png "Road Transformed"
 [image_bin_thresh_1]:./images/figure_1.png "Binary1"
 [image_bin_thresh_2]:./images/figure_2.png "Binary2"
 [image_pers_1]:./images/figure_4.png "Perpective wrap"
@@ -28,7 +28,7 @@ The goals / steps of this project are the following:
 
 
 ### Camera Calibration
-A camera matrix maps the 3D real world into the camera image plane.The camera calibration algorithm computes the camera matrix in terms of extrinsic and intrinsic parameters. A good explanation is found at: https://www.mathworks.com/help/vision/ug/camera-calibration.html
+A 'camera matrix' maps the 3D real world into the camera image plane.The camera calibration algorithm computes the camera matrix in terms of extrinsic and intrinsic parameters. A good explanation is found at: https://www.mathworks.com/help/vision/ug/camera-calibration.html
 
 Camera distortion occurs due to lens imperfection. It is represented as a shift in the (x,y) position of a
 pixel from its ideal location. Distortion is represented as a matrix that transforms the positional vector (x,y). 
@@ -43,15 +43,19 @@ The code for this step is contained in the file calibrate.py.
 I start by preparing "object points", which will be the (x, y, z) coordinates of the chessboard corners in the world. Here I am assuming the chessboard is fixed on the (x, y) plane at z=0, such that the object points are the same for each calibration image.  Thus, `objp` is just a replicated array of coordinates, and `objpoints` will be appended with a copy of it every time I successfully detect all chessboard corners in a test image.  `imgpoints` will be appended with the (x, y) pixel position of each of the corners in the image plane with each successful chessboard detection.  
 
 I then used the output `objpoints` and `imgpoints` to compute the camera calibration and distortion coefficients using the `cv2.calibrateCamera()` function.  I applied this distortion correction to the test image using the `cv2.undistort()` function and obtained the following result. The first image shows chessboard images, overlayed with the corners detected by the cv2.findChessBoard() routine. 
+![alt text][image1]
 
+Second image shows the undistorted images for the respective images above.
+![alt text][image1a]
 
-A closer look at the top left images shows the bending of the top of the image (radial distortion) is un-distorted in the respective un-distorted image. A similar observation can be made about the bottom part of the top-right corner image.
+A closer look at the top left image shows the bending of the top of the image (radial distortion). The distortion is fixed in the  respective un-distorted image. A similar observation can be made about the bottom part of the top-right corner image.
 
 It is interesting to note that the `objpoints` do not have a unit, whereas `imgpoints` are measured in pixels. This is OK since the measurement of calibration and distortion matrices depend on relative distance between the pixels rather than any absolute scale.
+
 ###Pipeline (single images)
 
-#### 1. Provide an example of a distortion-corrected image.
-Once the calibration and the distortion matrix is found, it does not need to be recalculated for the same camera. We store it in file. As an example, we reload the stored matrix and apply it to one of the test images. 
+Once the calibration and the distortion matrix is found, it does not need to be recalculated for the same camera. We store it in pickle file in the calbrate.py file. As an example, we reload the stored matrix and apply it to one of the test images. An example of realistic scanerio on which distortion is applied is the image below.
+![alt text][image2]
 
 
 #### 2. Describe how (and identify where in your code) you used color transforms, gradients or other methods to create a thresholded binary image.  Provide an example of a binary image result.
