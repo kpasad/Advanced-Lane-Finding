@@ -52,13 +52,14 @@ A closer look at the top left image shows the bending of the top of the image (r
 
 It is interesting to note that the `objpoints` do not have a unit, whereas `imgpoints` are measured in pixels. This is OK since the measurement of calibration and distortion matrices depend on relative distance between the pixels rather than any absolute scale.
 
-###Pipeline (single images)
+As an example, we reload the stored matrix and apply it to one of the test images. An example of realistic scanerio on which distortion is applied is the image below.
 
-Once the calibration and the distortion matrix is found, it does not need to be recalculated for the same camera. We store it in pickle file in the calbrate.py file. As an example, we reload the stored matrix and apply it to one of the test images. An example of realistic scanerio on which distortion is applied is the image below.
 ![alt text][image2]
 
+Once the calibration and the distortion matrix is found, it does not need to be recalculated for the same camera. We store it in pickle file from the calbrate.py file.
 
-#### 2. Describe how (and identify where in your code) you used color transforms, gradients or other methods to create a thresholded binary image.  Provide an example of a binary image result.
+### Image Preprocessing Pipeline (single images)
+
 Lane identification is preceded by image pre-processing who purpose it to remove the information elements that are not essential to or detrimental to accurate lane finding. This pre-processing occurs as a series of steps:
 
 1. Gaussian blurring
@@ -68,25 +69,15 @@ Lane identification is preceded by image pre-processing who purpose it to remove
 	* Combining the edges dected by various methods
 4.  Undistortion using the pre-calculated distortion and calibration matrix 
 5.  Perspective transformation
-     
 
-I used a combination of color and gradient thresholds to generate a binary image (thresholding steps at lines # through # in `another_file.py`).  A couple of examples of binary thresholding are below
+The pipeleine is implemented in the file adv_lane_find.py, in the function `pipeline()`
+I used a combination of color and gradient thresholds to generate a binary image (thresholding steps at lines #136 through #149 in `adv_lane_find.py`).  A couple of examples of binary thresholding are below
 ![alt text][image_bin_thresh_1]
 ![alt text][image_bin_thresh_2]
 
-#### 3. Describe how (and identify where in your code) you performed a perspective transform and provide an example of a transformed image.
 
-After binary image conversion, we perform the un-distortion by reusing the camera distortion matrix calculated beforehand. A perspective transformation converts the image into a bird-eye view. Perspective transformation requires the source point locations in pixels and the destination points (in pixels) where the source points are maped. Based on this information the openCV functioncv2.getPerspectiveTransform()computes a transformation matrix. The cv2.warpPerspective() then applies this transformation to the un-distroted image. See the function corners_unwrap(). 
+After binary image conversion, we perform the un-distortion by reusing the camera distortion matrix calculated beforehand. calibrate.py must have been run earlier and the calibration matirx , stored in a pickled formated with file name dist_parms.p .A perspective transformation converts the image into a bird-eye view. Perspective transformation requires the source point locations in pixels and the destination points (in pixels) where the source points are maped. Based on this information the openCV functioncv2.getPerspectiveTransform()computes a transformation matrix. The cv2.warpPerspective() then applies this transformation to the un-distroted image. See the function corners_unwrap(). 
 We choose the src and destination  point as below. Other combinations would have worked fine as well.
-
-We use 2 kinds of gradient thresholds:
-Along the X axis.
-Directional gradient with thresholds of 30 and 90 degrees.
-This is done since the lane lines are more or less vertical.
-We then apply the following color thresholds:
-R & G channel thresholds so that yellow lanes are detected well.
-L channel threshold so that we don't take into account edges generated due to shadows.
-S channel threshold since it does a good job of separating out white & yellow lanes.
 
 | Source        | Destination   | 
 |:-------------:|:-------------:| 
@@ -111,11 +102,11 @@ In the parent function fit_lanes(), a second order polynomial is fit on the x an
 ![alt text][image_fit_1]
 ![alt text][image_fit_2]
 
-#### 5. Describe how (and identify where in your code) you calculated the radius of curvature of the lane and the position of the vehicle with respect to center.
+#### Radius of lane curvature
 
 The function find_curvature() computes the curvature.
 
-#### 6. Provide an example image of your result plotted back down onto the road such that the lane area is identified clearly.
+#### Lane are annotation
 The lanes are fitted on the perspective transformed image. To display the lanes on unwraped image, the fit lanes must be un-wraped as well. The function draw_poly() first creates an image with only the lanes. It then applys a perspective transform, but with a camera matrix that is created by inverting the order of source and destination images in the perspectiveTransform() computation function. See the corners_unwrap() function where both the transformation matrices are computed.
 The result of superimposing the fit lanes on baseline image are the following 
 
@@ -123,7 +114,7 @@ The result of superimposing the fit lanes on baseline image are the following
 
 ---
 
-Lane detection in streaming video
+####Lane detection in streaming video
 
 Link to [Lane detection and annotation in video](https://www.dropbox.com/s/i5fyqovcbe1g2id/white.mp4?dl=0)
 
