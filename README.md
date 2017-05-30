@@ -121,7 +121,8 @@ The result of superimposing the fit lanes on baseline image are the following
 
 Lane detection in streaming video
 
-Here's a [link to my video result](./project_video.mp4)
+Link to [Lane detection and annotation in video](https://www.dropbox.com/s/i5fyqovcbe1g2id/white.mp4?dl=0)
+
 
 ---
 
